@@ -39,10 +39,5 @@ pizzaHears(bot);
 // Реакции
 poopReaction(bot);
 
-bot.on(":photo", async (ctx) => {
-  const statusMessage = await ctx.reply("Processing your image, please wait");
-  await statusMessage.delete(); // so easy!
-});
-
 // Start the bot.
 startBot(bot);
