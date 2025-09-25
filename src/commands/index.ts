@@ -3,5 +3,13 @@ import { helpCommand } from "./help.js";
 import { hungerCommand } from "./hunger.js";
 import { startCommand } from "./start.js";
 import { testCommand } from "./test.js";
+import { profileCommand } from "./profile.js";
 
-export { cryptoCommand, helpCommand, startCommand, testCommand, hungerCommand };
+export {
+  cryptoCommand,
+  helpCommand,
+  startCommand,
+  testCommand,
+  hungerCommand,
+  profileCommand,
+};
