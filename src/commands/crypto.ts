@@ -3,6 +3,6 @@ import type { BotContext } from "../types.js";
 
 export const cryptoCommand = (bot: any) => {
   bot.command("crypto", async (ctx: BotContext) => {
-    await ctx.reply("Выберите крипту:", { reply_markup: cryptoMenu });
+    await ctx.reply("Выберите крипту:", { reply_markup: await cryptoMenu() });
   });
 };

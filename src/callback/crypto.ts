@@ -13,7 +13,11 @@ export const cryptoCallback = (bot: any) => {
       ctx?.callbackQuery?.message &&
         (await ctx.callbackQuery.message.editText(
           await getCryptoPrice(crypto as keyof typeof cryptoConfig),
-          { reply_markup: cryptoMenu }
+          {
+            reply_markup: await cryptoMenu(
+              cryptoConfig[crypto as keyof typeof cryptoConfig].id
+            ),
+          }
         ));
       await ctx.answerCallbackQuery();
     });
