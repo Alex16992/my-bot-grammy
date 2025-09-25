@@ -1,57 +1,29 @@
-import { Menu } from "@grammyjs/menu";
+import { InlineKeyboard } from "grammy";
 
 // Создайте простое меню.
-export const cryptoMenu = new Menu("my-menu-identifier")
-  .text("Bitcoin", async (ctx) => {
-    try {
-      // Запрос к CoinGecko API
-      const res = await fetch(
-        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
-      );
-      const data = await res.json();
 
-      const btcPrice = data.bitcoin.usd;
-
-      // Отправляем ответ пользователю
-      await ctx.reply(`💰 Курс биткоина:\nBitcoin: $${btcPrice}`);
-    } catch (err) {
-      console.error(err);
-      await ctx.reply("Ошибка при получении курса криптовалют.");
-    }
-  })
+export const cryptoMenu = new InlineKeyboard()
+  .text("Bitcoin", "bitcoin")
   .row()
-  .text("Ethereum", async (ctx) => {
-    try {
-      // Запрос к CoinGecko API
-      const res = await fetch(
-        "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
-      );
-      const data = await res.json();
-
-      const ethPrice = data.ethereum.usd;
-
-      // Отправляем ответ пользователю
-      await ctx.reply(`💰 Курс эфириума:\nEthereum: $${ethPrice}`);
-    } catch (err) {
-      console.error(err);
-      await ctx.reply("Ошибка при получении курса криптовалют.");
-    }
-  })
+  .text("Ethereum", "ethereum")
   .row()
-  .text("Litecoin", async (ctx) => {
-    try {
-      // Запрос к CoinGecko API
-      const res = await fetch(
-        "https://api.coingecko.com/api/v3/simple/price?ids=litecoin&vs_currencies=usd"
-      );
-      const data = await res.json();
+  .text("Litecoin", "litecoin")
+  .row()
+  .text("Назад", "back");
 
-      const ltcPrice = data.litecoin.usd;
+// .text("Litecoin", async (ctx) => {
+//   try {
+//     // Запрос к CoinGecko API
+//     const res = await fetch(
+//       "https://api.coingecko.com/api/v3/simple/price?ids=litecoin&vs_currencies=usd"
+//     );
+//     const data = await res.json();
 
-      // Отправляем ответ пользователю
-      await ctx.reply(`💰 Курс лайткоина:\nLitecoin: $${ltcPrice}`);
-    } catch (err) {
-      console.error(err);
-      await ctx.reply("Ошибка при получении курса криптовалют.");
-    }
-  });
+//     const ltcPrice = data.litecoin.usd;
+
+//     // Отправляем ответ пользователю
+//     await ctx.reply(`💰 Курс лайткоина:\nLitecoin: $${ltcPrice}`);
+//   } catch (err) {
+//     console.error(err);
+//     await ctx.reply("Ошибка при получении курса криптовалют.");
+//   }
