@@ -6,6 +6,7 @@ import {
   hungerCommand,
   startCommand,
   testCommand,
+  profileCommand,
 } from "./commands/index.js";
 import { urlFilter } from "./filters/index.js";
 import { pizzaHears, replyHears, skibidiHears } from "./hears/index.js";
@@ -16,8 +17,6 @@ import { startBot } from "./config/start.js";
 import { hydrate } from "@grammyjs/hydrate";
 import { cryptoCallback } from "./callback/crypto.js";
 import { errorHandling } from "./errors/error.js";
-import prisma from "./prisma.js";
-import { profileCommand } from "./commands/profile.js";
 import { svoHears } from "./hears/svo.js";
 import { Middleware } from "./middleware.js";
 
