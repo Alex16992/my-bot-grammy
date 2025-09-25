@@ -18,6 +18,7 @@ import { cryptoCallback } from "./callback/crypto.js";
 import { errorHandling } from "./errors/error.js";
 import prisma from "./prisma.js";
 import { profileCommand } from "./commands/profile.js";
+import { svoHears } from "./hears/svo.js";
 
 // Create an instance of the `Bot` class and pass your bot token to it.
 const bot = new Bot<BotContext>(process.env.BOT_TOKEN as string);
@@ -84,6 +85,7 @@ urlFilter(bot);
 skibidiHears(bot);
 replyHears(bot);
 pizzaHears(bot);
+svoHears(bot);
 
 // Callbacks
 cryptoCallback(bot);
