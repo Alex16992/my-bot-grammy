@@ -1,6 +1,7 @@
+import type { Bot } from "grammy";
 import type { BotContext } from "../types.js";
 
-export const testCommand = (bot: any) => {
+export const testCommand = (bot: Bot<BotContext>) => {
   bot.command("test", async (ctx: BotContext) => {
     const statusMessage = await ctx.reply("Wait...");
 

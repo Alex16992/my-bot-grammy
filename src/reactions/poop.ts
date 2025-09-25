@@ -1,6 +1,7 @@
+import type { Bot } from "grammy";
 import type { BotContext } from "../types.js";
 
-export const poopReaction = (bot: any) => {
+export const poopReaction = (bot: Bot<BotContext>) => {
   bot.reaction("💩", (ctx: BotContext) => {
     const msgId = ctx?.update?.message_reaction?.message_id;
     const first_name = ctx?.update?.message_reaction?.user?.first_name;

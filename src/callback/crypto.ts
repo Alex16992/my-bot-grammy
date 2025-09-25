@@ -1,3 +1,4 @@
+import type { Bot } from "grammy";
 import { cryptoMenu } from "../menu/cryptoMenu.js";
 import type { BotContext } from "../types.js";
 
@@ -7,7 +8,7 @@ const cryptoConfig = {
   litecoin: { id: "litecoin", name: "Litecoin", label: "лайткоина" },
 } as const;
 
-export const cryptoCallback = (bot: any) => {
+export const cryptoCallback = (bot: Bot<BotContext>) => {
   Object.keys(cryptoConfig).forEach((crypto) => {
     bot.callbackQuery(crypto, async (ctx: BotContext) => {
       ctx?.callbackQuery?.message &&

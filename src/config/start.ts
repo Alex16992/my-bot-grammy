@@ -1,6 +1,8 @@
+import type { Bot } from "grammy";
 import { listCommand } from "../commands/list.js";
+import type { BotContext } from "../types.js";
 
-export const startBot = async (bot: any) => {
+export const startBot = async (bot: Bot<BotContext>) => {
   bot.start({
     allowed_updates: [
       "message",

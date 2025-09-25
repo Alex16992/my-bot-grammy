@@ -1,6 +1,7 @@
-import { GrammyError, HttpError } from "grammy";
+import { Bot, GrammyError, HttpError } from "grammy";
+import type { BotContext } from "../types.js";
 
-export const errorHandling = (bot: any) => {
+export const errorHandling = (bot: Bot<BotContext>) => {
   bot.catch((err: any) => {
     const ctx = err.ctx;
     console.error(`Error while handling update ${ctx.update.update_id}:`);

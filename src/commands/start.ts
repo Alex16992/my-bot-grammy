@@ -1,7 +1,8 @@
+import type { Bot } from "grammy";
 import prisma from "../prisma.js";
 import type { BotContext } from "../types.js";
 
-export const startCommand = (bot: any) => {
+export const startCommand = (bot: Bot<BotContext>) => {
   bot.command("start", async (ctx: BotContext) => {
     if (!ctx.from)
       return ctx.reply(

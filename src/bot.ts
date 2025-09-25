@@ -19,53 +19,14 @@ import { errorHandling } from "./errors/error.js";
 import prisma from "./prisma.js";
 import { profileCommand } from "./commands/profile.js";
 import { svoHears } from "./hears/svo.js";
+import { Middleware } from "./middleware.js";
 
 // Create an instance of the `Bot` class and pass your bot token to it.
 const bot = new Bot<BotContext>(process.env.BOT_TOKEN as string);
 bot.use(hydrate());
 
-// Middleware для проверки и регистрации пользователя
-bot.use(async (ctx, next) => {
-  if (!ctx.from) {
-    return await next();
-  }
-
-  let userDB = await prisma.user.findUnique({
-    where: { telegramId: ctx.from.id.toString() },
-  });
-
-  if (!userDB) {
-    try {
-      await prisma.user.upsert({
-        where: { telegramId: ctx.from.id.toString() },
-        update: {},
-        create: {
-          telegramId: ctx.from.id.toString(),
-          username: ctx.from.username ?? null,
-        },
-      });
-
-      userDB = await prisma.user.findUnique({
-        where: { telegramId: ctx.from.id.toString() },
-      });
-
-      if (userDB) {
-        await ctx.reply(
-          `Пользователь ${userDB.username || "без username"} зарегистрирован!`
-        );
-      }
-    } catch (error) {
-      console.error("Ошибка при регистрации пользователя:", error);
-      await ctx.reply("Не удалось создать пользователя, попробуйте позже");
-    }
-  }
-
-  // Добавляем информацию о пользователе в контекст
-  ctx.user = userDB;
-
-  // Продолжаем выполнение других обработчиков
-  await next();
-});
+// Middleware
+Middleware(bot);
 
 // Сессии
 pizzaSession(bot);

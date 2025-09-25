@@ -1,4 +1,7 @@
-export const listCommand = async (bot: any) => {
+import type { Bot } from "grammy";
+import type { BotContext } from "../types.js";
+
+export const listCommand = async (bot: Bot<BotContext>) => {
   await bot.api.setMyCommands([
     { command: "register", description: "Зарегистрироваться" },
     { command: "profile", description: "Показать профиль" },

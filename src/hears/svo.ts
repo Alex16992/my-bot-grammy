@@ -1,6 +1,7 @@
+import type { Bot } from "grammy";
 import type { BotContext } from "../types.js";
 
-export const svoHears = (bot: any) => {
+export const svoHears = (bot: Bot<BotContext>) => {
   bot.hears(/сво/gi, async (ctx: BotContext) => {
     const text = ctx.msg?.text || "";
     const match = text.match(/сво/gi)?.[0];
