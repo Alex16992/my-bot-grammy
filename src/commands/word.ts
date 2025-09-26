@@ -1,13 +1,11 @@
 import type { Bot } from "grammy";
 import type { BotContext } from "../types.js";
-import { replyMsg } from "../helpers/reply.js";
 import prisma from "../prisma.js";
 import { getGlobalProgressWordle } from "../helpers/index.js";
 
 export const wordCommand = (bot: Bot<BotContext>) => {
   bot.command("word", async (ctx: BotContext) => {
     const word = ctx.match?.toString().trim().toLowerCase() || "";
-    const msgId = ctx.update?.message?.message_id;
     const currentWordle = await prisma.wordle.findFirst({
       orderBy: { createdAt: "desc" },
       include: { WordleAttempt: true },
@@ -16,11 +14,11 @@ export const wordCommand = (bot: Bot<BotContext>) => {
     const isFullWord = word.length === 5 && /^[а-яё]+$/i.test(word);
 
     if (!currentWordle) {
-      return replyMsg(ctx, "Нет активных слов", msgId);
+      return ctx.reply("Нет активных слов");
     }
 
     if (!ctx.user) {
-      return replyMsg(ctx, "Пользователь не найден в системе", msgId);
+      return ctx.reply("Пользователь не найден в системе");
     }
 
     const attemptsCount = await prisma.wordleAttempt.count({
@@ -29,20 +27,16 @@ export const wordCommand = (bot: Bot<BotContext>) => {
 
     if (attemptsCount >= 5) {
       const progress = (await getGlobalProgressWordle(currentWordle)).progress;
-      return replyMsg(
-        ctx,
-        `У вас уже 5 попыток на этот Wordle!\nВаш прогресс: ${progress}`,
-        msgId
+      return ctx.reply(
+        `У вас уже 5 попыток на этот Wordle!\nВаш прогресс: ${progress}`
       );
     }
 
     if (!isLetter && !isFullWord) {
-      return replyMsg(
-        ctx,
+      return ctx.reply(
         `Напишите букву или слово из 5 букв\nОсталось попыток: ${
           5 - attemptsCount
-        }`,
-        msgId
+        }`
       );
     }
 
@@ -64,17 +58,13 @@ export const wordCommand = (bot: Bot<BotContext>) => {
           where: { id: ctx.user.id },
           data: { wordle_score: ctx.user.wordle_score + 3 },
         });
-        return replyMsg(
-          ctx,
-          `Поздравляем! Вы угадали слово: ${currentWordle.answer}\n+3 балла - /score`,
-          msgId
+        return ctx.reply(
+          `Поздравляем! Вы угадали слово: ${currentWordle.answer}\n+3 балла - /score`
         );
       }
 
-      return replyMsg(
-        ctx,
-        `Вы написали слово "${word}". Оно неверное.\nОсталось попыток: ${remainingAttempts}`,
-        msgId
+      return ctx.reply(
+        `Вы написали слово "${word}". Оно неверное.\nОсталось попыток: ${remainingAttempts}`
       );
     }
 
@@ -118,33 +108,25 @@ export const wordCommand = (bot: Bot<BotContext>) => {
       const isWinner = progress === currentWordle.answer;
 
       if (isWinner) {
-        return replyMsg(
-          ctx,
-          `Поздравляем! Слово "${currentWordle.answer}" полностью угадано! 🎉`,
-          msgId
+        return ctx.reply(
+          `Поздравляем! Слово "${currentWordle.answer}" полностью угадано! 🎉`
         );
       }
 
       if (isNewCorrectLetter) {
-        return replyMsg(
-          ctx,
-          `Поздравляем! Вы угадали букву "${word.toUpperCase()}"\n+1 балл - /score\nВаш прогресс: ${progress}\nОсталось попыток: ${remainingAttempts}`,
-          msgId
+        return ctx.reply(
+          `Поздравляем! Вы угадали букву "${word.toUpperCase()}"\n+1 балл - /score\nВаш прогресс: ${progress}\nОсталось попыток: ${remainingAttempts}`
         );
       }
 
       if (!isCorrectLetter) {
-        return replyMsg(
-          ctx,
-          `Буквы "${word.toUpperCase()}" нет в слове.\nВаш прогресс: ${progress}\nОсталось попыток: ${remainingAttempts}`,
-          msgId
+        return ctx.reply(
+          `Буквы "${word.toUpperCase()}" нет в слове.\nВаш прогресс: ${progress}\nОсталось попыток: ${remainingAttempts}`
         );
       }
 
-      return replyMsg(
-        ctx,
-        `Буква "${word.toUpperCase()}" уже была открыта.\nВаш прогресс: ${progress}\nОсталось попыток: ${remainingAttempts}`,
-        msgId
+      return ctx.reply(
+        `Буква "${word.toUpperCase()}" уже была открыта.\nВаш прогресс: ${progress}\nОсталось попыток: ${remainingAttempts}`
       );
     }
   });

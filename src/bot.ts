@@ -22,10 +22,11 @@ import { Middleware } from "./middleware.js";
 import { scoreCommand } from "./commands/score.js";
 import { wordCommand } from "./commands/word.js";
 import { newWordCommand } from "./commands/new_word.js";
+import { autoQuote } from "@roziscoding/grammy-autoquote";
 
 // Create an instance of the `Bot` class and pass your bot token to it.
 const bot = new Bot<BotContext>(process.env.BOT_TOKEN as string);
-bot.use(hydrate());
+bot.use(hydrate(), autoQuote());
 
 // Middleware
 Middleware(bot);

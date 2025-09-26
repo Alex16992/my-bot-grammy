@@ -27,27 +27,13 @@ export const scoreCommand = (bot: Bot<BotContext>) => {
     const msgId = ctx?.update?.message?.message_id;
 
     if (!username) {
-      msgId
-        ? ctx.reply(
-            `Очки СВО у вас: ${ctx.user.svo_score}\nОчки Wordle у вас: ${ctx.user.wordle_score}`,
-            {
-              reply_parameters: { message_id: msgId },
-            }
-          )
-        : ctx.reply(
-            `Очки СВО у вас: ${ctx.user.svo_score}\nОчки Wordle у вас: ${ctx.user.wordle_score}`
-          );
+      ctx.reply(
+        `Очки СВО у вас: ${ctx.user.svo_score}\nОчки Wordle у вас: ${ctx.user.wordle_score}`
+      );
     } else {
-      msgId
-        ? ctx.reply(
-            `Очки СВО у ${username}: ${svoScore}\nОчки Wordle у ${username}: ${wordleScore}`,
-            {
-              reply_parameters: { message_id: msgId },
-            }
-          )
-        : ctx.reply(
-            `Очки СВО у ${username}: ${svoScore}\nОчки Wordle у ${username}: ${wordleScore}`
-          );
+      ctx.reply(
+        `Очки СВО у ${username}: ${svoScore}\nОчки Wordle у ${username}: ${wordleScore}`
+      );
     }
   });
 };
