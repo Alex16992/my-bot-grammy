@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node build/bot.js",
-    "build": "tsc"
+    "build": "tsc",
+    "prisma": "npx prisma migrate dev --name fast_migrate && npx prisma generate"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,7 @@
     "@prisma/client": "^6.16.2",
     "dotenv": "^17.2.2",
     "grammy": "^1.38.2",
+    "node-cron": "^4.2.1",
     "prisma": "^6.16.2"
   },
   "type": "module"

@@ -37,6 +37,11 @@ export const Middleware = (bot: Bot<BotContext>) => {
         console.error("Ошибка при регистрации пользователя:", error);
         await ctx.reply("Не удалось создать пользователя, попробуйте позже");
       }
+    } else {
+      await prisma.user.update({
+        where: { telegramId: ctx.from.id.toString() },
+        data: { username: ctx.from.username ?? null },
+      });
     }
 
     // Добавляем информацию о пользователе в контекст

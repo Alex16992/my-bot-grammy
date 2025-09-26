@@ -1,13 +1,11 @@
 import type { Bot } from "grammy";
 import type { BotContext } from "../types.js";
+import { RUWORDS } from "../russian.js";
 
 export const testCommand = (bot: Bot<BotContext>) => {
   bot.command("test", async (ctx: BotContext) => {
-    const statusMessage = await ctx.reply("Wait...");
-
-    setTimeout(() => {
-      // Используем плагин гидратации
-      statusMessage.editText("Tested!").catch(() => {});
-    }, 3000);
+    const randomWord = RUWORDS[Math.floor(Math.random() * RUWORDS.length)];
+    ctx.reply(randomWord || "Ошибка при генерации слова");
+    console.log(ctx.update.message?.chat);
   });
 };

@@ -19,6 +19,9 @@ import { cryptoCallback } from "./callback/crypto.js";
 import { errorHandling } from "./errors/error.js";
 import { svoHears } from "./hears/svo.js";
 import { Middleware } from "./middleware.js";
+import { scoreCommand } from "./commands/score.js";
+import { wordCommand } from "./commands/word.js";
+import { newWordCommand } from "./commands/new_word.js";
 
 // Create an instance of the `Bot` class and pass your bot token to it.
 const bot = new Bot<BotContext>(process.env.BOT_TOKEN as string);
@@ -37,6 +40,9 @@ helpCommand(bot);
 startCommand(bot);
 testCommand(bot);
 hungerCommand(bot);
+scoreCommand(bot);
+wordCommand(bot);
+newWordCommand(bot);
 
 // Фильтры
 urlFilter(bot);

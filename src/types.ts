@@ -8,7 +8,26 @@ export interface User {
   telegramId: string;
   username: string | null;
   balance: number;
+  svo_score: number;
+  wordle_score: number;
   createdAt: Date;
+}
+
+// Интерфейс для wordle
+export interface WordleAttempt {
+  id: number;
+  userId: number;
+  wordleId: number;
+  word: string;
+  createdAt: Date;
+  attempt: number;
+}
+
+export interface Wordle {
+  id: number;
+  answer: string;
+  createdAt: Date;
+  WordleAttempt: WordleAttempt[];
 }
 
 export type BotContext = HydrateFlavor<

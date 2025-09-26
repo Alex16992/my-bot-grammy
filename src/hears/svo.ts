@@ -1,5 +1,6 @@
 import type { Bot } from "grammy";
 import type { BotContext } from "../types.js";
+import prisma from "../prisma.js";
 
 export const svoHears = (bot: Bot<BotContext>) => {
   bot.hears(/сво/gi, async (ctx: BotContext) => {
@@ -16,6 +17,17 @@ export const svoHears = (bot: Bot<BotContext>) => {
           quote: quote,
         },
       });
+
+      if (ctx.from) {
+        await prisma.user.update({
+          where: { telegramId: ctx.from.id.toString() },
+          data: {
+            svo_score: {
+              increment: 1,
+            },
+          },
+        });
+      }
     } else {
       await ctx.reply("ZZZzzzzzzz 😴😴😴");
     }

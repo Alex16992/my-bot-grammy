@@ -8,9 +8,30 @@ datasource db {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
-  telegramId String   @unique
-  username   String?
-  balance    Float    @default(0)
-  createdAt  DateTime @default(now())
+  id             Int             @id @default(autoincrement())
+  telegramId     String          @unique
+  username       String?         @unique
+  balance        Float           @default(0)
+  svo_score      Int             @default(0)
+  createdAt      DateTime        @default(now())
+  wordleAttempts WordleAttempt[] // связь с попытками
+  wordle_score   Int             @default(0)
+}
+
+model Wordle {
+  id            Int             @id @default(autoincrement())
+  answer        String
+  createdAt     DateTime        @default(now())
+  WordleAttempt WordleAttempt[]
+}
+
+model WordleAttempt {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  wordle    Wordle   @relation(fields: [wordleId], references: [id])
+  wordleId  Int
+  word      String
+  createdAt DateTime @default(now())
+  attempt   Int // номер попытки пользователя на этот Wordle
 }

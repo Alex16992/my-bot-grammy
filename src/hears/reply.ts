@@ -10,5 +10,6 @@ export const replyHears = (bot: Bot<BotContext>) => {
           reply_parameters: { message_id: ctx.msg.message_id },
         })
       : await ctx.reply("You say: " + message);
+    console.log(ctx.update.message);
   });
 };
