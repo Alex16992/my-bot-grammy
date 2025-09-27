@@ -11,7 +11,12 @@ export const svoHears = (bot: Bot<BotContext>) => {
       const startIndex = text.indexOf(match);
       const quote = text.slice(startIndex, startIndex + match.length);
 
-      await ctx.reply("ZZZzzzzzzz 😴😴😴");
+      await ctx.reply("ZZZzzzzzzz 😴😴😴", {
+        reply_parameters: {
+          message_id: ctx.msg.message_id,
+          quote: quote,
+        },
+      });
 
       if (ctx.from) {
         await prisma.user.update({

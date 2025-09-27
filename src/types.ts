@@ -1,6 +1,7 @@
 import type { Context, SessionFlavor } from "grammy";
 import type { PizzaSessionData } from "./session/pizzaSession.js";
 import type { HydrateFlavor } from "@grammyjs/hydrate";
+import type { ConversationFlavor } from "@grammyjs/conversations";
 
 // Интерфейс для пользователя
 export interface User {
@@ -30,9 +31,14 @@ export interface Wordle {
   WordleAttempt: WordleAttempt[];
 }
 
-export type BotContext = HydrateFlavor<
-  Context & SessionFlavor<PizzaSessionData>
-> &
-  Context & {
-    user?: User | null;
-  };
+export interface SessionData {
+  word: string;
+  pizzaCount: number;
+}
+
+export type BotContext = ConversationFlavor<
+  HydrateFlavor<Context & SessionFlavor<SessionData>> &
+    Context & {
+      user?: User | null;
+    }
+>;
