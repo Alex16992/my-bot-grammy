@@ -34,6 +34,9 @@ export interface Wordle {
 export interface SessionData {
   word: string;
   pizzaCount: number;
+  userName: string;
+  userPhoto: string;
+  userMeme: string;
 }
 
 export type BotContext = ConversationFlavor<

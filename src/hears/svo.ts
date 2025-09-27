@@ -18,6 +18,8 @@ export const svoHears = (bot: Bot<BotContext>) => {
         },
       });
 
+      await ctx.react("💩");
+
       if (ctx.from) {
         await prisma.user.update({
           where: { telegramId: ctx.from.id.toString() },

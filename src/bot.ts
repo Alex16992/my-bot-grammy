@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { Bot, Context, session } from "grammy";
+import { Bot, InputFile, session } from "grammy";
 import {
   cryptoCommand,
   helpCommand,
@@ -27,17 +27,39 @@ import { wordleSchedule } from "./schedule/wordle.js";
 import { conversations, createConversation } from "@grammyjs/conversations";
 import { write_word } from "./conversations/write_word.js";
 import { rps } from "./conversations/rps.js";
+import { savePhoto } from "./conversations/savePhoto.js";
 import { limit } from "@grammyjs/ratelimiter";
+import { register } from "./conversations/register.js";
+import { PrismaClient } from "@prisma/client";
+import { registerCommand } from "./commands/register.js";
+import { PrismaAdapter } from "@grammyjs/storage-prisma";
 
 // Create an instance of the `Bot` class and pass your bot token to it.
 const bot = new Bot<BotContext>(process.env.BOT_TOKEN as string);
 
-function initial(): SessionData {
-  return { word: "", pizzaCount: 0 };
-}
+const prisma = new PrismaClient();
 
-bot.use(hydrate(), autoQuote(), session({ initial }), conversations());
+bot.use(hydrate(), autoQuote());
 
+bot.use(
+  session({
+    initial: () => ({
+      word: "",
+      pizzaCount: 0,
+      userName: "1123",
+      userPhoto: "1123",
+      userMeme: "1123",
+    }),
+    storage: new PrismaAdapter(prisma.session),
+    getSessionKey: (ctx) => {
+      return ctx.update.message
+        ? ctx.update.message.from?.id.toString()
+        : ctx.from?.id.toString();
+    },
+  })
+);
+
+// Антифлуд
 bot.use(
   limit({
     // Разрешите обрабатывать только 1 сообщения каждую секунду.
@@ -51,20 +73,26 @@ bot.use(
       );
     },
 
-    // Обратите внимание, что ключ должен быть числом в строковом формате, например «123456789».
     keyGenerator: (ctx) => {
-      return ctx.from?.id.toString();
+      return ctx.update.message
+        ? ctx.update.message.from?.id.toString()
+        : ctx.from?.id.toString();
     },
   })
 );
 
+bot.use(conversations());
+
+bot.use(createConversation(register));
 bot.use(createConversation(write_word));
 bot.use(createConversation(rps));
+bot.use(createConversation(savePhoto));
 
 // Middleware
 Middleware(bot);
 
 // Команды
+registerCommand(bot);
 profileCommand(bot);
 cryptoCommand(bot);
 helpCommand(bot);
@@ -75,6 +103,16 @@ scoreCommand(bot);
 wordCommand(bot);
 newWordCommand(bot);
 rpsCommand(bot);
+
+bot.command("photo", async (ctx) => {
+  await ctx.replyWithPhoto(new InputFile("src/image/image.png"), {
+    caption: "Ваше сохраненое фото",
+  });
+});
+
+bot.command("save_photo", async (ctx) => {
+  await ctx.conversation.enter("savePhoto");
+});
 
 // scheduler
 wordleSchedule(bot);
