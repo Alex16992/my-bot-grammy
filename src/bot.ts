@@ -15,7 +15,7 @@ import {
 import { urlFilter } from "./filters/index.js";
 import { pizzaHears, replyHears, skibidiHears } from "./hears/index.js";
 import { poopReaction } from "./reactions/poop.js";
-import type { BotContext, SessionData } from "./types.js";
+import type { BotContext } from "./types.js";
 import { startBot } from "./config/start.js";
 import { hydrate } from "@grammyjs/hydrate";
 import { cryptoCallback } from "./callback/crypto.js";
@@ -63,13 +63,13 @@ bot.use(
 bot.use(
   limit({
     // Разрешите обрабатывать только 1 сообщения каждую секунду.
-    timeFrame: 1000,
-    limit: 1,
+    timeFrame: 2000,
+    limit: 3,
 
     // Эта функция вызывается при превышении лимита.
     onLimitExceeded: async (ctx) => {
       await ctx.reply(
-        "Пожалуйста, воздержитесь от отправки слишком большого количества запросов!"
+        "Пожалуйста, воздержитесь от отправки слишком большого количества сообщений!"
       );
     },
 
