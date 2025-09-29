@@ -11,7 +11,7 @@
     "lint:fix": "bunx biome lint --write --unsafe",
     "format": "bunx biome format --write",
     "format:check": "bunx biome format .",
-    "check": "bunx biome check",
+    "check": "bunx biome check"
   },
   "keywords": [],
   "author": "",
