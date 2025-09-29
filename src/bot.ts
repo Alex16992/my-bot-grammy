@@ -9,6 +9,7 @@ import { Bot, session } from "grammy";
 
 import {
   cryptoCallback,
+  profileCallback,
   steamCallback,
   steamResetCallback,
 } from "./callback/index.js";
@@ -145,6 +146,7 @@ svoHears(bot);
 cryptoCallback(bot);
 steamCallback(bot);
 steamResetCallback(bot);
+profileCallback(bot);
 
 // Реакции
 poopReaction(bot);
