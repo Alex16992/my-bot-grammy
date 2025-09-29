@@ -24,7 +24,7 @@ export const scoreCommand = (bot: Bot<BotContext>) => {
       wordleScore = user?.wordle_score || 0;
     }
 
-    const msgId = ctx?.update?.message?.message_id;
+    const _msgId = ctx?.update?.message?.message_id;
 
     if (!username) {
       ctx.reply(

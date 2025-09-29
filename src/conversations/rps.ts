@@ -11,7 +11,7 @@ export async function rps(
     ctx.session.userId = ctx.from?.id || 0;
   });
   const session = await conversation.external(async (ctx) => ctx.session);
-  let sessionUserId = session.userId;
+  const sessionUserId = session.userId;
   const currentUserId = ctx.update.message ? ctx.update.message.from?.id : 0; // Сохраняем ID пользователя для проверки
   let answer = "";
   let rpsStarted = session.rpsStarted || false;

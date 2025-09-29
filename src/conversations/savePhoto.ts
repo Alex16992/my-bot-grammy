@@ -1,6 +1,6 @@
 import type { Conversation } from "@grammyjs/conversations";
 import type { BotContext } from "../types.js";
-import { writeFile } from "fs/promises";
+import { writeFile } from "node:fs/promises";
 
 export async function savePhoto(
   conversation: Conversation<BotContext, BotContext>,

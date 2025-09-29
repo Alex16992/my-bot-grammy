@@ -1,5 +1,4 @@
 import type { Context, SessionFlavor } from "grammy";
-import type { PizzaSessionData } from "./session/pizzaSession.js";
 import type { HydrateFlavor } from "@grammyjs/hydrate";
 import type { ConversationFlavor } from "@grammyjs/conversations";
 

@@ -6,16 +6,22 @@
   "scripts": {
     "start": "bun build/bot.js",
     "build": "bunx tsc",
-    "prisma": "bunx prisma migrate dev --name fast_migrate && bunx prisma generate"
+    "prisma": "bunx prisma migrate dev --name fast_migrate && bunx prisma generate",
+    "lint": "bunx biome lint",
+    "lint:fix": "bunx biome lint --write --unsafe",
+    "format": "bunx biome format --write",
+    "format:check": "bunx biome format .",
+    "check": "bunx biome check",
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@biomejs/biome": "2.2.4",
+    "@types/bun": "latest",
     "@types/node": "^24.5.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.2",
-    "@types/bun": "latest"
+    "typescript": "^5.9.2"
   },
   "dependencies": {
     "@grammyjs/conversations": "^2.1.0",

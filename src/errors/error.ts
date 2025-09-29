@@ -1,4 +1,4 @@
-import { Bot, GrammyError, HttpError } from "grammy";
+import { type Bot, GrammyError, HttpError } from "grammy";
 import type { BotContext } from "../types.js";
 
 export const errorHandling = (bot: Bot<BotContext>) => {

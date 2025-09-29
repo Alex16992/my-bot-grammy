@@ -1,33 +1,35 @@
 import "dotenv/config";
-import { Bot, session } from "grammy";
-import { hydrate } from "@grammyjs/hydrate";
 import { conversations, createConversation } from "@grammyjs/conversations";
+import { hydrate } from "@grammyjs/hydrate";
 import { limit } from "@grammyjs/ratelimiter";
 import { PrismaAdapter } from "@grammyjs/storage-prisma";
 import { PrismaClient } from "@prisma/client";
 import { autoQuote } from "@roziscoding/grammy-autoquote";
+import { Bot, session } from "grammy";
 
-import { startBot } from "./config/start.js";
-
-import { Middleware } from "./middleware.js";
-
-import { errorHandling } from "./errors/error.js";
+import {
+  cryptoCallback,
+  steamCallback,
+  steamResetCallback,
+} from "./callback/index.js";
 
 import {
   cryptoCommand,
   helpCommand,
   hungerCommand,
+  newWordCommand,
+  photoCommand,
+  profileCommand,
+  registerCommand,
+  rpsCommand,
+  savePhotoCommand,
+  scoreCommand,
   startCommand,
   testCommand,
-  profileCommand,
-  newWordCommand,
-  rpsCommand,
-  scoreCommand,
   wordCommand,
-  photoCommand,
-  savePhotoCommand,
-  registerCommand,
 } from "./commands/index.js";
+
+import { startBot } from "./config/start.js";
 
 import {
   register,
@@ -37,11 +39,7 @@ import {
   write_word,
 } from "./conversations/index.js";
 
-import {
-  cryptoCallback,
-  steamCallback,
-  steamResetCallback,
-} from "./callback/index.js";
+import { errorHandling } from "./errors/error.js";
 
 import { urlFilter } from "./filters/index.js";
 
@@ -51,6 +49,8 @@ import {
   skibidiHears,
   svoHears,
 } from "./hears/index.js";
+
+import { Middleware } from "./middleware.js";
 
 import { poopReaction } from "./reactions/poop.js";
 

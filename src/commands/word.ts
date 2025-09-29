@@ -5,7 +5,7 @@ import { getGlobalProgressWordle } from "../helpers/index.js";
 
 export const wordCommand = (bot: Bot<BotContext>) => {
   bot.command("word", async (ctx: BotContext) => {
-    let word = ctx.match?.toString().trim().toLowerCase() || "";
+    const word = ctx.match?.toString().trim().toLowerCase() || "";
 
     if (!word) {
       await ctx.conversation.enter("write_word");

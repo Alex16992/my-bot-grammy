@@ -1,4 +1,4 @@
-import { Bot } from "grammy";
+import type { Bot } from "grammy";
 import type { BotContext } from "../types.js";
 
 export const savePhotoCommand = (bot: Bot<BotContext>) => {
