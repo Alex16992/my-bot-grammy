@@ -33,6 +33,9 @@ import { register } from "./conversations/register.js";
 import { PrismaClient } from "@prisma/client";
 import { registerCommand } from "./commands/register.js";
 import { PrismaAdapter } from "@grammyjs/storage-prisma";
+import { steamCallback } from "./callback/steam.js";
+import { steam } from "./conversations/steam.js";
+import { steamResetCallback } from "./callback/steam_reset.js";
 
 // Create an instance of the `Bot` class and pass your bot token to it.
 const bot = new Bot<BotContext>(process.env.BOT_TOKEN as string);
@@ -46,16 +49,14 @@ bot.use(
     initial: () => ({
       word: "",
       pizzaCount: 0,
-      userName: "1123",
-      userPhoto: "1123",
-      userMeme: "1123",
+      userName: "",
+      userPhoto: "",
+      userMeme: "",
+      userId: 0,
+      rpsStarted: false,
+      rps_bot_answer: "",
     }),
     storage: new PrismaAdapter(prisma.session),
-    getSessionKey: (ctx) => {
-      return ctx.update.message
-        ? ctx.update.message.from?.id.toString()
-        : ctx.from?.id.toString();
-    },
   })
 );
 
@@ -67,11 +68,11 @@ bot.use(
     limit: 3,
 
     // Эта функция вызывается при превышении лимита.
-    onLimitExceeded: async (ctx) => {
-      await ctx.reply(
-        "Пожалуйста, воздержитесь от отправки слишком большого количества сообщений!"
-      );
-    },
+    // onLimitExceeded: async (ctx) => {
+    //   await ctx.reply(
+    //     "Пожалуйста, воздержитесь от отправки слишком большого количества сообщений!"
+    //   );
+    // },
 
     keyGenerator: (ctx) => {
       return ctx.update.message
@@ -81,15 +82,16 @@ bot.use(
   })
 );
 
+// Middleware
+Middleware(bot);
+
 bot.use(conversations());
 
 bot.use(createConversation(register));
 bot.use(createConversation(write_word));
 bot.use(createConversation(rps));
 bot.use(createConversation(savePhoto));
-
-// Middleware
-Middleware(bot);
+bot.use(createConversation(steam));
 
 // Команды
 registerCommand(bot);
@@ -128,6 +130,8 @@ svoHears(bot);
 
 // Callbacks
 cryptoCallback(bot);
+steamCallback(bot);
+steamResetCallback(bot);
 
 // Реакции
 poopReaction(bot);

@@ -110,8 +110,17 @@ export const processWordLogic = async (ctx: BotContext, word: string) => {
         .map((w) => w.toLowerCase())
     );
 
+    console.log(guessedLetters);
+
     const isCorrectLetter = answerLower.includes(word);
     const isNewCorrectLetter = isCorrectLetter && !guessedLetters.has(word);
+    const isNewLetter = !isCorrectLetter && !guessedLetters.has(word);
+
+    let newGuessedLetters = Array.from(guessedLetters);
+
+    if (isNewLetter || isNewCorrectLetter) {
+      newGuessedLetters = [...guessedLetters, word];
+    }
 
     if (isNewCorrectLetter) {
       await prisma.user.update({
@@ -144,18 +153,18 @@ export const processWordLogic = async (ctx: BotContext, word: string) => {
 
     if (isNewCorrectLetter) {
       return ctx.reply(
-        `Поздравляем! Вы угадали букву "${word.toUpperCase()}"\n+1 балл - /score\nВаш прогресс: ${progress}\nОсталось попыток: ${remainingAttempts}`
+        `Поздравляем! Вы угадали букву "${word.toUpperCase()}"\n+1 балл - /score\nВаш прогресс: ${progress}\nОсталось попыток: ${remainingAttempts}\nСписок прошлых букв: ${newGuessedLetters}`
       );
     }
 
     if (!isCorrectLetter) {
       return ctx.reply(
-        `Буквы "${word.toUpperCase()}" нет в слове.\nВаш прогресс: ${progress}\nОсталось попыток: ${remainingAttempts}`
+        `Буквы "${word.toUpperCase()}" нет в слове.\nВаш прогресс: ${progress}\nОсталось попыток: ${remainingAttempts}\nСписок прошлых букв: ${newGuessedLetters}`
       );
     }
 
     return ctx.reply(
-      `Буква "${word.toUpperCase()}" уже была открыта.\nВаш прогресс: ${progress}\nОсталось попыток: ${remainingAttempts}`
+      `Буква "${word.toUpperCase()}" уже была открыта.\nВаш прогресс: ${progress}\nОсталось попыток: ${remainingAttempts}\nСписок прошлых букв: ${newGuessedLetters}`
     );
   }
 };

@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node build/bot.js",
-    "build": "tsc",
-    "prisma": "npx prisma migrate dev --name fast_migrate && npx prisma generate"
+    "start": "bun build/bot.js",
+    "build": "bunx tsc",
+    "prisma": "bunx prisma migrate dev --name fast_migrate && bunx prisma generate"
   },
   "keywords": [],
   "author": "",
@@ -14,7 +14,8 @@
   "devDependencies": {
     "@types/node": "^24.5.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "@types/bun": "latest"
   },
   "dependencies": {
     "@grammyjs/conversations": "^2.1.0",
@@ -24,10 +25,12 @@
     "@grammyjs/storage-prisma": "^2.5.1",
     "@prisma/client": "^6.16.2",
     "@roziscoding/grammy-autoquote": "^2.0.9",
+    "axios": "^1.12.2",
     "dotenv": "^17.2.2",
     "grammy": "^1.38.2",
     "node-cron": "^4.2.1",
     "prisma": "^6.16.2"
   },
-  "type": "module"
+  "type": "module",
+  "private": true
 }

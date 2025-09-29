@@ -1,5 +1,6 @@
 import type { Bot } from "grammy";
 import type { BotContext } from "../types.js";
+import { profileMenu } from "../menu/profileMenu.js";
 
 export const profileCommand = (bot: Bot<BotContext>) => {
   bot.command("profile", async (ctx: BotContext) => {
@@ -11,7 +12,10 @@ export const profileCommand = (bot: Bot<BotContext>) => {
         ctx.user.username || "не указан"
       }\nБаланс: ${
         ctx.user.balance
-      } биткоинов\nДата регистрации: ${ctx.user.createdAt.toLocaleDateString()}`
+      } биткоинов\nДата регистрации: ${ctx.user.createdAt.toLocaleDateString()}`,
+      {
+        reply_markup: await profileMenu(),
+      }
     );
   });
 };

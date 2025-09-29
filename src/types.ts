@@ -11,6 +11,7 @@ export interface User {
   balance: number;
   svo_score: number;
   wordle_score: number;
+  steam_id: string | null;
   createdAt: Date;
 }
 
@@ -37,6 +38,9 @@ export interface SessionData {
   userName: string;
   userPhoto: string;
   userMeme: string;
+  userId: number;
+  rpsStarted: boolean;
+  rps_bot_answer: string;
 }
 
 export type BotContext = ConversationFlavor<
