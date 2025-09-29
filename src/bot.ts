@@ -1,5 +1,18 @@
 import "dotenv/config";
-import { Bot, InputFile, session } from "grammy";
+import { Bot, session } from "grammy";
+import { hydrate } from "@grammyjs/hydrate";
+import { conversations, createConversation } from "@grammyjs/conversations";
+import { limit } from "@grammyjs/ratelimiter";
+import { PrismaAdapter } from "@grammyjs/storage-prisma";
+import { PrismaClient } from "@prisma/client";
+import { autoQuote } from "@roziscoding/grammy-autoquote";
+
+import { startBot } from "./config/start.js";
+
+import { Middleware } from "./middleware.js";
+
+import { errorHandling } from "./errors/error.js";
+
 import {
   cryptoCommand,
   helpCommand,
@@ -11,31 +24,39 @@ import {
   rpsCommand,
   scoreCommand,
   wordCommand,
+  photoCommand,
+  savePhotoCommand,
+  registerCommand,
 } from "./commands/index.js";
+
+import {
+  register,
+  rps,
+  savePhoto,
+  steam,
+  write_word,
+} from "./conversations/index.js";
+
+import {
+  cryptoCallback,
+  steamCallback,
+  steamResetCallback,
+} from "./callback/index.js";
+
 import { urlFilter } from "./filters/index.js";
-import { pizzaHears, replyHears, skibidiHears } from "./hears/index.js";
+
+import {
+  pizzaHears,
+  replyHears,
+  skibidiHears,
+  svoHears,
+} from "./hears/index.js";
+
 import { poopReaction } from "./reactions/poop.js";
-import type { BotContext } from "./types.js";
-import { startBot } from "./config/start.js";
-import { hydrate } from "@grammyjs/hydrate";
-import { cryptoCallback } from "./callback/crypto.js";
-import { errorHandling } from "./errors/error.js";
-import { svoHears } from "./hears/svo.js";
-import { Middleware } from "./middleware.js";
-import { autoQuote } from "@roziscoding/grammy-autoquote";
+
 import { wordleSchedule } from "./schedule/wordle.js";
-import { conversations, createConversation } from "@grammyjs/conversations";
-import { write_word } from "./conversations/write_word.js";
-import { rps } from "./conversations/rps.js";
-import { savePhoto } from "./conversations/savePhoto.js";
-import { limit } from "@grammyjs/ratelimiter";
-import { register } from "./conversations/register.js";
-import { PrismaClient } from "@prisma/client";
-import { registerCommand } from "./commands/register.js";
-import { PrismaAdapter } from "@grammyjs/storage-prisma";
-import { steamCallback } from "./callback/steam.js";
-import { steam } from "./conversations/steam.js";
-import { steamResetCallback } from "./callback/steam_reset.js";
+
+import type { BotContext } from "./types.js";
 
 // Create an instance of the `Bot` class and pass your bot token to it.
 const bot = new Bot<BotContext>(process.env.BOT_TOKEN as string);
@@ -63,7 +84,7 @@ bot.use(
 // Антифлуд
 bot.use(
   limit({
-    // Разрешите обрабатывать только 1 сообщения каждую секунду.
+    // Разрешите обрабатывать только 3 сообщения каждые 2 секунды.
     timeFrame: 2000,
     limit: 3,
 
@@ -105,16 +126,8 @@ scoreCommand(bot);
 wordCommand(bot);
 newWordCommand(bot);
 rpsCommand(bot);
-
-bot.command("photo", async (ctx) => {
-  await ctx.replyWithPhoto(new InputFile("src/image/image.png"), {
-    caption: "Ваше сохраненое фото",
-  });
-});
-
-bot.command("save_photo", async (ctx) => {
-  await ctx.conversation.enter("savePhoto");
-});
+savePhotoCommand(bot);
+photoCommand(bot);
 
 // scheduler
 wordleSchedule(bot);
