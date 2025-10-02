@@ -9,6 +9,7 @@
         "@grammyjs/menu": "^1.3.1",
         "@grammyjs/ratelimiter": "^1.2.1",
         "@grammyjs/storage-prisma": "^2.5.1",
+        "@j4ckofalltrades/steam-webapi-ts": "^1.2.2",
         "@prisma/client": "^6.16.2",
         "@roziscoding/grammy-autoquote": "^2.0.9",
         "axios": "^1.12.2",
@@ -58,6 +59,8 @@
     "@grammyjs/storage-prisma": ["@grammyjs/storage-prisma@2.5.1", "", {}, "sha512-OIH167hWpe9q4hFJSr5JXULRUB4CrO9EXPDa8PLmOknzuuBtXn4wQ7Z+JPKXYTdW3dkj1N1Kov3vW1zN7WjweQ=="],
 
     "@grammyjs/types": ["@grammyjs/types@3.22.1", "", {}, "sha512-QJX0Y8lpjE+/nuTKGmxybKmvdrLHV7gqbhI/UXoWlJLWtowbwk+oW+ngfHKwegD+ewL2SX8+tQo/1E14Ma0qlw=="],
+
+    "@j4ckofalltrades/steam-webapi-ts": ["@j4ckofalltrades/steam-webapi-ts@1.2.2", "", { "dependencies": { "axios": "^1.10.0" } }, "sha512-k2zgR0AZ0IuHvK24tC4Gl1/EMbSZQe3k6Mbe7C1QuJDqIbSNe4qNKHEeLRCIOaTA0p61V2ZIUIdzTWpdJUpQAg=="],
 
     "@jridgewell/resolve-uri": ["@jridgewell/resolve-uri@3.1.2", "", {}, "sha512-bRISgCIjP20/tbWSPWMEi54QVPRZExkuD9lJL+UIxUKtwVJA8wW1Trb1jMs1RFXo1CBTNZ/5hpC9QvmKWdopKw=="],
 

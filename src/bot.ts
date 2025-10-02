@@ -54,9 +54,8 @@ import {
 import { Middleware } from "./middleware.js";
 
 import { poopReaction } from "./reactions/poop.js";
-
+import { steamGameSchedule } from "./schedule/steamGame.js";
 import { wordleSchedule } from "./schedule/wordle.js";
-
 import type { BotContext } from "./types.js";
 
 // Create an instance of the `Bot` class and pass your bot token to it.
@@ -132,6 +131,7 @@ photoCommand(bot);
 
 // scheduler
 wordleSchedule(bot);
+steamGameSchedule(bot);
 
 // Фильтры
 urlFilter(bot);

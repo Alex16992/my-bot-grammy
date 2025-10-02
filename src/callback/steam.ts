@@ -1,3 +1,8 @@
+import {
+  ISteamUserWrapper,
+  type PlayerSummary,
+  type SteamId,
+} from "@j4ckofalltrades/steam-webapi-ts";
 import { type Bot, InlineKeyboard } from "grammy";
 import { updateSteamData } from "../helpers/steamHelper.js";
 import type { BotContext } from "../types.js";
@@ -74,6 +79,34 @@ export const steamCallback = (bot: Bot<BotContext>) => {
         userData.data.player.meta.avatarfull
       );
       steamData = ownedGamesResult.updatedData;
+
+      const playerSummary = async (
+        steamids: SteamId[]
+      ): Promise<PlayerSummary> => {
+        const {
+          response: { players },
+        } = await new ISteamUserWrapper(
+          process.env.STEAM_API_KEY as string
+        ).getPlayerSummaries(steamids);
+        return players[0] as PlayerSummary;
+      };
+
+      const currentGameDetails = async (steamids: SteamId[]) => {
+        const { personaname, gameextrainfo } = await playerSummary(steamids);
+        return {
+          personaname,
+          gameextrainfo,
+        };
+      };
+
+      const gameDetails = await currentGameDetails([
+        userData.data.player.meta.steamid,
+      ]);
+
+      steamData +=
+        gameDetails.gameextrainfo === undefined
+          ? "\nСейчас не в игре"
+          : `\nСейчас в игре: ${gameDetails.gameextrainfo}`;
 
       const inlineKeyboard = new InlineKeyboard()
         .url("Ссылка на аккаунт", userData.data.player.meta.profileurl)
