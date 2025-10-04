@@ -17,13 +17,14 @@ model User {
   id             Int             @id @default(autoincrement())
   telegramId     String          @unique
   username       String?         @unique
+  customUsername String?         @unique
   balance        Float           @default(0)
   svo_score      Int             @default(0)
   createdAt      DateTime        @default(now())
   wordleAttempts WordleAttempt[] // связь с попытками
   wordle_score   Int             @default(0)
   steam_id       String?         @unique
-  steamActivity  SteamActivity?  // связь с активностью Steam
+  steamActivity  SteamActivity? // связь с активностью Steam
 }
 
 model Wordle {
@@ -48,8 +49,8 @@ model SteamActivity {
   id          Int      @id @default(autoincrement())
   user        User     @relation(fields: [userId], references: [id])
   userId      Int      @unique
-  personaname String   // имя пользователя в Steam
-  currentGame String?  // текущая игра (null если не в игре)
+  personaname String // имя пользователя в Steam
+  currentGame String? // текущая игра (null если не в игре)
   lastChecked DateTime @default(now()) // время последней проверки
   updatedAt   DateTime @updatedAt
 }

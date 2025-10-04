@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "bun ./build/bot.js",
-    "build": "bunx tsx src/bot.ts",
+    "start": "node ./build/bot.js",
+    "dev": "bunx tsx src/bot.ts",
+    "build": "bunx tsc",
     "prisma": "bunx prisma migrate dev --name fast_migrate && bunx prisma generate",
     "lint": "bunx biome lint",
     "lint:fix": "bunx biome lint --write --unsafe",

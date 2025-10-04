@@ -1,17 +1,30 @@
 import { profileMenu } from "../menu/profileMenu.js";
+import prisma from "../prisma.js";
 import type { BotContext } from "../types.js";
 
-export const getProfileText = (user: any): string => {
+export const getProfileText = async (userId: any): Promise<string> => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) {
+    return `Пользователь не найден в системе`;
+  }
+
   return `ID: ${user.id}\nTelegram ID: ${user.telegramId}\nUsername: ${
-    user.username || "не указан"
+    user.customUsername || user.username || "не указан"
   }\nБаланс: ${
     user.balance
   } биткоинов\nДата регистрации: ${user.createdAt.toLocaleDateString()}`;
 };
 
-export const getProfileOptions = async (ctx: BotContext) => {
+export const getProfileOptions = async (
+  ctx: BotContext,
+  steamId: string | null
+) => {
+  console.log(steamId);
   return {
-    reply_markup: await profileMenu(),
+    reply_markup: await profileMenu(steamId),
     reply_parameters: {
       message_id: ctx.msg ? ctx.msg.message_id : 0,
       allow_sending_without_reply: true,
@@ -19,13 +32,23 @@ export const getProfileOptions = async (ctx: BotContext) => {
   };
 };
 
-export const sendProfile = async (ctx: BotContext) => {
+export const sendProfile = async (ctx: BotContext, user_id: number) => {
   if (!ctx.user) {
     return ctx.reply("Пользователь не найден в системе");
   }
 
-  const text = getProfileText(ctx.user);
-  const options = await getProfileOptions(ctx);
+  const profileId = user_id !== 0 ? user_id : ctx.user.id;
+
+  const user = await prisma.user.findUnique({
+    where: { id: profileId },
+  });
+
+  const steamId = user?.steam_id || null;
+
+  console.log(steamId);
+
+  const text = await getProfileText(profileId);
+  const options = await getProfileOptions(ctx, steamId);
 
   return ctx.replyWithPhoto(
     "https://i.pinimg.com/474x/07/c4/72/07c4720d19a9e9edad9d0e939eca304a.jpg",
@@ -52,8 +75,8 @@ export const editProfile = async (ctx: BotContext) => {
     return;
   }
 
-  const text = getProfileText(ctx.user);
-  const options = await getProfileOptions(ctx);
+  const text = await getProfileText(ctx.user.id);
+  const options = await getProfileOptions(ctx, ctx.user.steam_id || null);
 
   try {
     // Пытаемся заменить фото на минимальное прозрачное изображение

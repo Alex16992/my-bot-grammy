@@ -13,7 +13,7 @@ import {
   steamCallback,
   steamResetCallback,
 } from "./callback/index.js";
-
+import { customUsernameCommand } from "./commands/custom_username.js";
 import {
   cryptoCommand,
   helpCommand,
@@ -29,9 +29,8 @@ import {
   testCommand,
   wordCommand,
 } from "./commands/index.js";
-
 import { startBot } from "./config/start.js";
-
+import { customUsername } from "./conversations/custom_username.js";
 import {
   register,
   rps,
@@ -39,20 +38,15 @@ import {
   steam,
   write_word,
 } from "./conversations/index.js";
-
 import { errorHandling } from "./errors/error.js";
-
 import { urlFilter } from "./filters/index.js";
-
 import {
   pizzaHears,
   replyHears,
   skibidiHears,
   svoHears,
 } from "./hears/index.js";
-
 import { Middleware } from "./middleware.js";
-
 import { poopReaction } from "./reactions/poop.js";
 import { steamGameSchedule } from "./schedule/steamGame.js";
 import { wordleSchedule } from "./schedule/wordle.js";
@@ -113,6 +107,7 @@ bot.use(createConversation(write_word));
 bot.use(createConversation(rps));
 bot.use(createConversation(savePhoto));
 bot.use(createConversation(steam));
+bot.use(createConversation(customUsername));
 
 // Команды
 registerCommand(bot);
@@ -128,6 +123,7 @@ newWordCommand(bot);
 rpsCommand(bot);
 savePhotoCommand(bot);
 photoCommand(bot);
+customUsernameCommand(bot);
 
 // scheduler
 wordleSchedule(bot);

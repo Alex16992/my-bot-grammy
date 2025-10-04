@@ -1,38 +1,41 @@
 import type { Bot } from "grammy";
-import type { BotContext } from "../types.js";
 import prisma from "../prisma.js";
+import type { BotContext } from "../types.js";
 
 export const scoreCommand = (bot: Bot<BotContext>) => {
   bot.command("score", async (ctx: BotContext) => {
-    const username = ctx.match?.toString().substring(1) || null;
+    const userName = ctx.match?.toString().substring(1) || null;
     let svoScore = 0;
     let wordleScore = 0;
+    let customUsername = "";
 
     if (!ctx.user || !ctx.from) {
       return ctx.reply("Пользователь не найден в системе");
     }
 
-    if (!username) {
+    if (!userName) {
       const user = await prisma.user.findUnique({
         where: { telegramId: ctx.from.id.toString() },
       });
       svoScore = user?.svo_score || 0;
       wordleScore = user?.wordle_score || 0;
+      customUsername = user?.customUsername || "";
     } else {
-      const user = await prisma.user.findUnique({ where: { username } });
+      const user = await prisma.user.findUnique({
+        where: { username: userName },
+      });
       svoScore = user?.svo_score || 0;
       wordleScore = user?.wordle_score || 0;
+      customUsername = user?.customUsername || "";
     }
 
-    const _msgId = ctx?.update?.message?.message_id;
-
-    if (!username) {
+    if (!userName) {
       ctx.reply(
         `Очки СВО у вас: ${ctx.user.svo_score}\nОчки Wordle у вас: ${ctx.user.wordle_score}`
       );
     } else {
       ctx.reply(
-        `Очки СВО у ${username}: ${svoScore}\nОчки Wordle у ${username}: ${wordleScore}`
+        `Очки СВО у ${customUsername !== "" ? customUsername : userName}: ${svoScore}\nОчки Wordle у ${customUsername !== "" ? customUsername : userName}: ${wordleScore}`
       );
     }
   });

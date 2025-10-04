@@ -8,8 +8,9 @@ import { updateSteamData } from "../helpers/steamHelper.js";
 import type { BotContext } from "../types.js";
 
 export const steamCallback = (bot: Bot<BotContext>) => {
-  bot.callbackQuery("steam", async (ctx) => {
-    const steam_id = ctx.user?.steam_id;
+  bot.callbackQuery(/steam-(.+)/, async (ctx) => {
+    const steam_id = String(ctx.match[1]);
+    console.log("Steam ID:", ctx.match);
     let steamData = "";
 
     try {
